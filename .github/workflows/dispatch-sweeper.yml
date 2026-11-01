@@ -1,0 +1,18 @@
+ name: dispatch-sweeper
+ # Triggers JQDAW/mindcraft-RotN's test-server-sweeper every 15 minutes.
+ # GitHub drops nearly all scheduled runs in that repo (a fork), so this non-fork repo
+ # provides the schedule. The token can only run Actions workflows in mindcraft-RotN.
+ on:
+   schedule:
+     - cron: '3,18,33,48 * * * *'
+   workflow_dispatch:
+ permissions: {}
+ jobs:
+   dispatch:
+     runs-on: ubuntu-latest
+     timeout-minutes: 3
+     steps:
+       - name: Dispatch test-server-sweeper on develop
+         env:
+           GH_TOKEN: ${{ secrets.SWEEPER_DISPATCH_TOKEN }}
+         run: gh workflow run test-server-sweeper.yml --repo JQDAW/mindcraft-RotN --ref develop
